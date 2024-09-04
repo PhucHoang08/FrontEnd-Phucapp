@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './cart.css';
 import { CartContext } from '../CartContext/CartContext';
+import Modal from '../Modal/modal';
 
 function Cart() {
     const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
@@ -20,6 +21,19 @@ function Cart() {
     const calculateTotalPrice = () => {
         return cart.reduce((total, product) => total + product.salePrice * product.quantity, 0);
     };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = () => {
+        setIsModalOpen(true); 
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false); 
+    };
+
+    
+
+    
 
     return (
         <div className="Cart">
@@ -79,11 +93,16 @@ function Cart() {
                             <h2>- Total: <span>${calculateTotalPrice().toFixed(2)}</span></h2>
                         </div>
                         <div className="button-buy">
-                            <button className="boton-elegante">ADD TO CART</button>
+                            <button onClick={handleOpenModal} className="boton-elegante">ADD TO CART</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                message="Items have been added to your cart!"
+            />
         </div>
     );
 }
